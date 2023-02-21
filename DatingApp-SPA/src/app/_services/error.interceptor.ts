@@ -1,55 +1,53 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from "@angular/common/http";
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HTTP_INTERCEPTORS,
+} from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 
 @Injectable()
+export class ErrorInterceptor implements HttpInterceptor {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    return next.handle(req).pipe(
+      catchError((error) => {
+        if (error.status === 401) {
+          return throwError(error.statusText);
+        }
+        if (error instanceof HttpErrorResponse) {
+          const applicationError = error.headers.get("Application-Error");
+          if (applicationError) {
+            return throwError(applicationError);
+          }
+          const serverError = error.error;
+          let modalStateErrors = "";
 
-export class ErrorInterceptor implements HttpInterceptor{
-    intercept(
-        req: HttpRequest<any>,
-        next: HttpHandler
-        ): Observable<HttpEvent<any>> 
-        {
-      return next.handle(req).pipe(
-           
-        catchError(error =>{
-            if(error.status === 401){
-                return throwError(error.statusText);
+          if (serverError.errors && typeof serverError.errors === "object") {
+            for (const key in serverError.errors) {
+              if (serverError.errors[key]) {
+                console.log(serverError.errors[key]);
+                modalStateErrors += serverError.errors[key] + "\n";
+              }
             }
-            if(error instanceof HttpErrorResponse){
-                const applicationError =error.headers.get('Application-Error');
-                if(applicationError){
-                    return throwError(applicationError);
-                }
-                const serverError = error.error;
-                let modalStateErrors = '';
-               
-                if(serverError.errors && typeof serverError.errors === 'object'){
-                    for(const key in serverError.errors ){
-                        if(serverError.errors[key] ){
-                            console.log(serverError.errors[key]);
-                            modalStateErrors += serverError.errors[key]+ '\n';
-                        }
-                    }
-                    console.log(modalStateErrors);
-                }
+            console.log(modalStateErrors);
+          }
 
-                return throwError(modalStateErrors || serverError || 'Server Error');
-            }
-        })
-
-
-      );
-    
-    }
-
-
+          return throwError(modalStateErrors || serverError || "Server Error");
+        }
+      })
+    );
+  }
 }
 
 export const ErrorInterceptorProvider = {
-    provide: HTTP_INTERCEPTORS,
-    useClass : ErrorInterceptor,
-    multi:true,// <== this multi:true since HTTP_INTERCEPTORS can have multiple interceptors
-
-}
+  provide: HTTP_INTERCEPTORS,
+  useClass: ErrorInterceptor,
+  multi: true, // <== this multi:true since HTTP_INTERCEPTORS can have multiple interceptors
+};

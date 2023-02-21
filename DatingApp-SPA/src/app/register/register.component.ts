@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AlertifyService } from '../_services/alertify.service';
-import { AuthService } from '../_services/auth.service';
-
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { AlertifyService } from "../_services/alertify.service";
+import { AuthService } from "../_services/auth.service";
 
 @Component({
   selector: "app-register",
@@ -11,7 +10,10 @@ import { AuthService } from '../_services/auth.service';
 export class RegisterComponent implements OnInit {
   @Output() valuesFromRegister = new EventEmitter();
   model: any = {};
-  constructor(private authService: AuthService , private alertifyService:AlertifyService) {}
+  constructor(
+    private authService: AuthService,
+    private alertifyService: AlertifyService
+  ) {}
 
   ngOnInit() {}
 
