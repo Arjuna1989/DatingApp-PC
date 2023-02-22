@@ -24,13 +24,13 @@ export class NavComponent implements OnInit {
   login() {
     this.authService.login(this.model).subscribe(
       (next) => {
-        this.alertifyService.success("loged in successfully");
+        this.alertifyService.success('loged in successfully');
       },
       (error) => {
-        this.alertifyService.error("Logging failed");
+        this.alertifyService.error('Logging failed');
       },
       () => {
-        this.router.navigate(["/members"]);
+        this.router.navigate(['/members']);
       }
     );
     console.log(this.model);
@@ -41,11 +41,11 @@ export class NavComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.authService.decodedToken= null;
     this.authService.currentUser= null;
-    this.alertifyService.message("Logged out successfully");
-    this.router.navigate(["/home"]);
+    this.alertifyService.message('Logged out successfully');
+    this.router.navigate(['/home']);
   }
 }

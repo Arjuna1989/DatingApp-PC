@@ -30,18 +30,16 @@ export class AuthService {
         const user = response;
         if (user) {
           localStorage.setItem('user',JSON.stringify(user.user));
-          localStorage.setItem("token", user.token);
+          localStorage.setItem('token', user.token);
           this.currentUser = user.user;
           this.changeMemberPhoto(this.currentUser.photoUrl);
-        
-        
         }
       })
     );
   }
 
-  register(model: any) {
-    return this.http.post(this.baseUrl + "register", model);
+  register(user: User) {
+    return this.http.post(this.baseUrl + 'register', user);
   }
 
   loggedIn(){
