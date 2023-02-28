@@ -60,6 +60,7 @@ namespace DatingApp.API
 
                 };
             });
+            services.AddScoped<LogUserActivity>();
             
         }
 
