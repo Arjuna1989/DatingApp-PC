@@ -13,7 +13,7 @@ import { AuthService } from "../_services/auth.service";
 })
 export class RegisterComponent implements OnInit {
   @Output() valuesFromRegister = new EventEmitter();
- user: User;
+  user: User;
   registerForm: FormGroup;
   colorTheme = 'theme-orange';
  
