@@ -3,6 +3,7 @@
     <div class="col-sm-4">
       <div class="card">
         <img class="card-img-top img-thumbnail" src="{{user.photoUrl || '../../../assets/businessman-character-avatar-isolated_24877-60111.avif'}}" alt="{{user.knownAs}}">
+        
         <div class="card-body">
           <div>
             <strong>Location:</strong>
@@ -10,7 +11,7 @@
           </div>
           <div>
             <strong>Age:</strong>
-            <p>{{user.Age}}</p>
+            <p>{{user.age}}</p>
           </div>
           <div>
             <strong>Last Active:</strong>
@@ -23,18 +24,16 @@
           <div class="card-footer">
             <div class="btn-group d-flex">
               <button class="btn btn-primary w-100">Like</button>
-              <button class="btn btn-success w-100">Message</button>
+              <button class="btn btn-success w-100" (click)="selectTab(3)">Message</button>
             </div>
           </div>
-
         </div>
       </div>
-
-
     </div>
+
     <div class="col-sm-8">
       <div class="tab-panel">
-        <tabset class="member-tabset">
+        <tabset class="member-tabset" #memberTabs>
           <tab heading="About {{user.knownAs}}">
             <h4>Description</h4>
             <p>{{user.introduction}}</p>
@@ -43,17 +42,17 @@
           </tab>
           <tab heading="Intrests">
             <h4>Intrests</h4>
-            <p>{{user.intrests}}</p>
+            <p>{{user.interest}}</p>
           </tab>
           <tab heading="Photos">
             <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
           </tab>
           <tab heading="Messages">
-            <p>messages will goes here</p>
+           <app-member-messages [recipientId]='user.id'></app-member-messages>
           </tab>
         </tabset>
       </div>
-
     </div>
+
   </div>
 </div>
